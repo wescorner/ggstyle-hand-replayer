@@ -1,0 +1,25 @@
+<!doctype html>
+<html><head><meta charset="utf-8"></head>
+<body style="margin:0;background:#000">
+<canvas id="cv" style="width:640px"></canvas>
+<script src="../engine.js"></script>
+<script src="../render.js"></script>
+<script>
+  const names = ['SB', 'BB', 'UTG', 'MP', 'Hero', 'BTN'];
+  const stacks = [795, 673, 1486, 418, 559, 500];
+  const setup = {
+    players: names.map((n, i) => ({ name: n, label: n, stack: stacks[i] })),
+    button: 5, hero: 4, heroCards: ['Ac', 'Kd'], sb: 2, bb: 5, straddle: false, straddleAmt: 10,
+    currency: '$', handId: 'HD1', table: 'Live', title: 'Live', date: '2026/10/14 02:17:00',
+  };
+  const a = (kind, to) => ({ t: 'act', kind, to });
+  const b = (...cards) => ({ t: 'board', cards });
+  const st = Engine.simulate(setup, [
+    a('fold'), a('fold'), a('raise', 10), a('raise', 30), a('fold'), a('fold'), a('raise', 100), a('call'),
+    b('6h', '5s', '3c'), a('raise', 55), a('call'), b('4c'), a('raise', 105), a('call'),
+    b('Td'), a('check'), a('raise', 240), a('fold'),
+  ]);
+  HandImage.render(document.getElementById('cv'), setup, st, 'bb');
+</script>
+</body>
+</html>
