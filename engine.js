@@ -368,6 +368,7 @@
           minTo: Math.min(st.currentBet + st.lastRaise, maxTo), maxTo,
           canRaise: maxTo > st.currentBet && P.some((q) => q !== p && !q.folded && !q.allIn),
           isBet: st.currentBet === 0, currentBet: st.currentBet, pot: sumTotals(),
+          unopened: st.street === 0 && !st.img[1].some((a) => a.word === 'Call' || a.word === 'Raise'),
         };
       }
       if (st.phase === 'show') {

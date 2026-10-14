@@ -338,10 +338,12 @@
           </div>
           <div class="row quick">
             <button class="sm" data-q="min">Min</button>
-            <button class="sm" data-q="0.33">⅓ pot</button>
+            ${need.unopened
+              ? ['2.5', '3', '3.5', '4'].map((m) => `<button class="sm" data-x="${m}">${m}x</button>`).join('')
+              : `<button class="sm" data-q="0.33">⅓ pot</button>
             <button class="sm" data-q="0.5">½ pot</button>
             <button class="sm" data-q="0.75">¾ pot</button>
-            <button class="sm" data-q="1">Pot</button>
+            <button class="sm" data-q="1">Pot</button>`}
             <button class="sm danger" data-q="allin">All-in ${fmt(need.maxTo)}</button>
           </div>
           <div class="error" id="err"></div>
@@ -405,6 +407,11 @@
         to = Math.max(need.minTo, Math.min(need.maxTo, to));
         if (q === 'allin') push({ t: 'act', kind: 'raise', to });
         else { input.value = fromCents(to); input.focus(); }
+      }));
+      document.querySelectorAll('[data-x]').forEach((b) => (b.onclick = () => {
+        const to = Math.round(need.currentBet * +b.dataset.x);
+        input.value = fromCents(Math.max(need.minTo, Math.min(need.maxTo, to)));
+        input.focus();
       }));
       const doRaise = () => {
         const to = toCents(input.value);
